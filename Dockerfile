@@ -8,7 +8,7 @@ WORKDIR /app/frontend
 RUN corepack enable pnpm
 
 # Copy lockfile and package.json first for better caching
-COPY frontend/package.json frontend/pnpm-lock.yaml ./
+COPY frontend/package.json frontend/pnpm-lock.yaml frontend/pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
 COPY frontend/ ./
@@ -25,7 +25,7 @@ WORKDIR /app
 RUN corepack enable pnpm
 
 # Copy lockfile and package.json first
-COPY backend/package.json backend/pnpm-lock.yaml ./
+COPY backend/package.json backend/pnpm-lock.yaml backend/pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
 COPY backend/ ./
@@ -40,7 +40,7 @@ ENV NODE_ENV=production
 RUN corepack enable pnpm
 
 # Install only production dependencies
-COPY backend/package.json backend/pnpm-lock.yaml ./
+COPY backend/package.json backend/pnpm-lock.yaml backend/pnpm-workspace.yaml ./
 RUN pnpm install --prod --frozen-lockfile && pnpm store prune
 
 COPY --from=backend-build /app/dist ./dist
